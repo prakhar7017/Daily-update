@@ -15,6 +15,20 @@ app.post("/", function (req, res) {
 
 });
 
-app.listen(80, function () {
-    console.log("server has started on port 80");
+app.get("/bmi",function(req,res){
+    res.sendFile(__dirname+"/bmi.html");
+});
+
+app.post("/bmi",function(req,res){
+    let wgt=parseFloat(req.body.weight);
+    let hgt=parseFloat(req.body.height);
+    let bmi=wgt/(hgt*hgt);
+
+    res.send("your Bmi is-> "+bmi);
+    
+})
+
+
+app.listen(3000, function () {
+    console.log("server has started on port 3000");
 });
