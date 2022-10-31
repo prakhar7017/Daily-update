@@ -36,27 +36,32 @@ app.post("/", function (req, res) {
 
   const jsonData = JSON.stringify(data);
 
-  const url ="https://us14.api.mailchimp.com/3.0/lists/7d440cd9cd";
+  const url = "https://us14.api.mailchimp.com/3.0/lists/7d440cd9cd";
 
-  const options={
+  const options = {
     method: "POST",
-    auth:"prakhar:d5320f376415b23c3f5544a813d06c11-us14",
+    auth: "prakhar:d5320f376415b23c3f5544a813d06c11-us14",
+  };
 
-  }
-
-  const request =https.request(url, options, function (response) {
-    response.on("data",function(data){
-        console.log(JSON.parse(data));
-    })
+  const request = https.request(url, options, function (response) {
+    
+    if (response.statusCode ==200) {
+        res.sendFile(__dirname + "/success.html");
+      } else {
+        res.sendFile(__dirname + "/failure.html");
+      }
+    response.on("data", function (data) {
+      console.log(JSON.parse(data));
+    });
   });
   request.write(jsonData);
-  request.end();
+  res.end();
+});
 
+app.post("/failure", function (req, res) {
+  res.redirect("/");
 });
 
 app.listen(80, function () {
   console.log("server has started on port 80");
 });
-
-// d5320f376415b23c3f5544a813d06c11-us14
-// 7d440cd9cd
