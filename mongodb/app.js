@@ -1,10 +1,13 @@
 const mongoose=require("mongoose");
 const express=require("express");
-const morgan=require("morgan");;
 const app=express();
 
+// use cloud DB 
+// or try re installing local server
 
-mongoose.connect("mongodb://localhost:27017/fruitsDB");
+mongoose.connect("mongodb://localhost:27017/fruitsDB", (err)=>{
+    console.log(err);
+})
 
 const fruitSchema=new mongoose.Schema({
     name: String,
