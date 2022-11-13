@@ -53,7 +53,7 @@ app.get("/student/:student_Roll",async(req,res)=>{
         console.log(studentData);
 
         if(!studentData){
-            return res.status(404).send();
+            return res.status(404).send("student not found");
         }else{
             res.send(studentData);
         }
@@ -105,9 +105,9 @@ app.patch("/student/:Studentroll",async(req,res)=>{
 
 
 //----------------------------------------------------- fetching top n students-------------------------------------------------------- 
-app.get("/students/:toppers",async(req,res)=>{
+app.get("/students/bottoms/:topnStudents",async(req,res)=>{
    try {
-    const topnStudents=req.params.toppers;
+    const topnStudents=req.params.topnStudents;
     const result=await Student.find().sort({cgpa:1}).limit(topnStudents);
     console.log(result);
     res.send(result);
@@ -120,9 +120,9 @@ app.get("/students/:toppers",async(req,res)=>{
 
 
 //-------------------------------------------------------- fetching bottom n students ----------------------------------------------
-app.get("/student/students/:bottom",async(req,res)=>{
+app.get("/students/toppers/:bottomnStudents",async(req,res)=>{
     try {
-     const bottomnStudents=req.params.bottom;
+     const bottomnStudents=req.params.bottomnStudents;
      const result=await Student.find().sort({cgpa:-1}).limit(bottomnStudents);
      console.log(result);
      res.send(result);
@@ -150,13 +150,28 @@ app.put("/student/:Studentroll",async(req,res)=>{
     try {
         const studentRoll=req.params.Studentroll;
         const newStudent=req.body;
-        const replaceStudent=await Student.findOneAndReplace({student_Roll:studentRoll},newStudent,{
+        const replaceStudent=await Student.findOneAndReplace({student_number:studentRoll},newStudent,{
             new:true
         });
         console.log(replaceStudent);
-        res.send(replaceStudent);
+        res.status(200).send(replaceStudent);
     } catch (e) {
         res.status(400).send(e);
+    }
+})
+
+app.get("/student/decrement/:studentroll",async(req,res)=>{
+    try {
+        const studentRoll=req.params.studentroll;
+        const todecrement=Number({cgpa:{$inc:-1}});
+        console.log(studentRoll);
+        const deccgpa=await Student.findOneAndUpdate({student_number:studentRoll},todecrement,{new:true});
+        console.log(deccgpa);
+        res.send(deccgpa);
+        
+    } catch (e) {
+        res.status(400).send(e);
+        
     }
 })
 
