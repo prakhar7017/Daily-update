@@ -5,10 +5,12 @@ const path=require("path");
 const hbs=require("hbs");
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
+const nodemailer=require("nodemailer");
 const app=express();
 require("./db/connection");
 const Register=require("./models/register");
 const auth=require("./middleware/auth");
+const transpoter=require("./middleware/email");
 
 const static_path=path.join(__dirname,"../public");
 const views_path=path.join(__dirname,"../views");
@@ -30,12 +32,7 @@ app.get("/signinsignup",(req,res)=>{
 });
 app.get("/findnickname",auth,async(req,res)=>{
     try {
-        // const cookie=req.cookies.autherizationcookie;
-        // const userData=await Register.findOne();
-
-
-        res.render("nickname");
-        
+        res.render("nicknameee");
     } catch (e) {
         
     }
@@ -43,9 +40,19 @@ app.get("/findnickname",auth,async(req,res)=>{
 app.get("/password/reset",(req,res)=>{
     res.render("emailsend");
 });
+
+
 app.get("/password/reset/:id/:token",(req,res)=>{
+    global.fetch_id=req.params.id;
+    // console.log(fetch_id);
+    global.fetch_token=req.params.token;
+    // console.log(fetch_token);
     res.render("password");
 });
+
+app.get("/update",auth,(req,res)=>{
+    res.render("update");
+})
 
 
 app.post("/register",async(req,res)=>{
@@ -129,8 +136,16 @@ app.post("/password/reset",async(req,res)=>{
 
             if(finduser){
                 const resettoken=await finduser.generateresetToken();
-                const link=`https://localhost:3000/password/reset/${finduser._id}/${resettoken}`;
-                console.log(link);
+                const link=`http://localhost:3000/password/reset/${finduser._id}/${resettoken}`;
+                // console.log(link);
+
+                let info=await transpoter.sendMail({
+                    from:process.env.EMAIL_FROM,
+                    to:finduser.email,
+                    subject:"password reset link",
+                    html:`<a href=${link}>click here </a>`,
+
+                })
                 res.send("email has been sent");
 
 
@@ -148,45 +163,53 @@ app.post("/password/reset",async(req,res)=>{
 });
 
 app.post("/password/reset/:id/:token",async(req,res)=>{
-    const userId=JSON.parse(req.params.id);
-    console.log(userId);
-    const usertoken=req.params.token;
-    console.log(usertoken);
+    const userId=fetch_id;
+    const usertoken=fetch_token;
     const password=req.body.rpassword;
-    console.log(password);
     const confirmpassword=req.body.rcpassword;
-    const newUser=await Register.findById({_id:userId});
-    console.log(newUser);
-    const newtoken=await newUser.generateresetToken();
-    console.log(newtoken);
-    try {
-        jwt.verify(usertoken,newtoken);
-        if(password===confirmpassword){
-            newpassword=await bcrypt.hash(password,10);
-            newconfirmpassword=await bcrypt.hash(confirmpassword,10);
-            const newdata=await Register.updateOne({password:newpassword},{confirmpassword:newconfirmpassword});
-            console.log(newdata);
-            res.send("successful")
-        }
 
-    } catch (e) {
-        res.send(e);
+    if(password!==confirmpassword){
+        return res.status(400).json({ message : "passwords are not matching" });
     }
 
+    try {
+        const payload=jwt.verify(usertoken,process.env.SECRET_KEY);
+        console.log(payload);
+        
+        if(!payload){
+            return res.status(400).json({ message : "token is not valid" });
+        }
 
+        const user=await Register.findOne({_id:payload._id });
+        user.password=password;
+        await user.save();
+        res.status(200).json({ message : "password has been changed" });
 
-})
+    } catch (e) {
+        res.status(400).json({ message : "something went wrong" });
+    }
+});
 
+app.post("/displaynickname",async(req,res)=>{
+    const bandaemail=req.body.uemail;
+    const displaynickmane=await Register.findOne({email:bandaemail});
+    const username=displaynickmane.nickname;
+     res.render("nickname",{
+        nicknameofperson:username
+     });
+});
 
-
-
-
-
+app.post("/update",async(req,res)=>{
+    const newnickname=req.body.new;
+    const emailaddress=req.body.email_address;
+    const update=await Register.findOneAndUpdate({email:emailaddress},{nickname:newnickname});
+    res.render("homepage");
+});
 
 
 app.listen(process.env.PORT||3000,()=>{
     console.log("connected");
-})
+});
 
 
 
@@ -207,4 +230,3 @@ app.listen(process.env.PORT||3000,()=>{
     //         res.send(e);
     //     }
     // });
-    

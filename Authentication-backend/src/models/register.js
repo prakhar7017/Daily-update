@@ -56,8 +56,10 @@ userSchema.methods.generateAuthToken=async function(){
 
 userSchema.methods.generateresetToken=async function(){
     try {
-        console.log(this._id)
-        const token=jwt.sign({_id:this._id.toString},process.env.SECRET_KEY,{
+        
+        console.log(this._id.toString());
+
+        const token=jwt.sign({_id:this._id.toString()},process.env.SECRET_KEY,{
             expiresIn:"15m"
         });
         this.tokens=this.tokens.concat({token:token});
@@ -85,6 +87,7 @@ userSchema.pre("save",async function(next){
     next();
 
 });
+
 userSchema.pre("updateOne",async function(next){
     if(this.isModified("password")){
         // console.log(`the current password is ${this.password}`);
