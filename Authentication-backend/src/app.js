@@ -43,11 +43,11 @@ app.get("/password/reset",(req,res)=>{
 
 
 app.get("/password/reset/:id/:token",(req,res)=>{
-    global.fetch_id=req.params.id;
-    // console.log(fetch_id);
-    global.fetch_token=req.params.token;
-    // console.log(fetch_token);
-    res.render("password");
+  data={
+    fetch_id:req.params.id,
+    fetch_token:req.params.token
+  }
+    res.render("password",data);
 });
 
 app.get("/update",auth,(req,res)=>{
@@ -67,11 +67,11 @@ app.post("/register",async(req,res)=>{
                 password:req.body.rpassword,
                 confirmpassword:req.body.rcpassword
             })
-            console.log("the success part"+registerUser);
+            // console.log("the success part"+registerUser);
 
             //------------------------------- middelware------------
             const token=await registerUser.generateAuthToken();
-            console.log(`the token is`+token);
+            // console.log(`the token is`+token);
             //------------------------------- middelware------------
 
             // the res.cookie() function is used to set the cookie name with a value 
@@ -87,7 +87,7 @@ app.post("/register",async(req,res)=>{
 
 
             const userdata=await registerUser.save();
-            console.log("the page part"+userdata);
+            // console.log(userdata);
             res.status(201).render("index");
         }else{
             res.send("passwords are not matching");
@@ -107,7 +107,7 @@ app.post("/login",async(req,res)=>{
         const match= await bcrypt.compare(password,userlogin.password);
 
         const token=await userlogin.generateAuthToken();
-        console.log(`the token is`+token);
+        // console.log(`the token is`+token);
 
         res.cookie("autherizationcookie",token,{
             expires:new Date(Date.now()+300000),
@@ -137,7 +137,7 @@ app.post("/password/reset",async(req,res)=>{
             if(finduser){
                 const resettoken=await finduser.generateresetToken();
                 const link=`http://localhost:3000/password/reset/${finduser._id}/${resettoken}`;
-                // console.log(link);
+                console.log(link);
 
                 let info=await transpoter.sendMail({
                     from:process.env.EMAIL_FROM,
@@ -163,8 +163,10 @@ app.post("/password/reset",async(req,res)=>{
 });
 
 app.post("/password/reset/:id/:token",async(req,res)=>{
-    const userId=fetch_id;
-    const usertoken=fetch_token;
+    const userId=data.fetch_id;
+    console.log(userId);
+    const usertoken=data.fetch_token;
+    console.log(usertoken);
     const password=req.body.rpassword;
     const confirmpassword=req.body.rcpassword;
 
@@ -199,7 +201,7 @@ app.post("/displaynickname",async(req,res)=>{
      });
 });
 
-app.post("/update",async(req,res)=>{
+app.post("/update",auth,async(req,res)=>{
     const newnickname=req.body.new;
     const emailaddress=req.body.email_address;
     const update=await Register.findOneAndUpdate({email:emailaddress},{nickname:newnickname});
@@ -213,20 +215,3 @@ app.listen(process.env.PORT||3000,()=>{
 
 
 
-// app.get("/student/:student_Roll",async(req,res)=>{
-
-    //     try {
-    //         const studentRoll=req.params.student_Roll;
-    //         const studentData=await Student.findOne({student_Roll:studentRoll});
-    //         console.log(studentData);
-    
-    //         if(!studentData){
-    //             return res.status(404).send("student not found");
-    //         }else{
-    //             res.send(studentData);
-    //         }
-            
-    //     } catch (e) {
-    //         res.send(e);
-    //     }
-    // });
