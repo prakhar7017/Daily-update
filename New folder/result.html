@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles3.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway&family=Rubik+Bubbles&display=swap" rel="stylesheet"> 
+    <title>QU</title>
+</head>
+<body>
+    <script>
+        window.addEventListener("load",fetchItems())
+function fetchItems()
+{
+    document.getElementById("answered").innerHTML=localStorage.getItem("ans");
+document.getElementById("correct").innerHTML=localStorage.getItem("cor");
+document.getElementById("wrong").innerHTML=localStorage.getItem("wro");
+document.getElementById("score").innerHTML=localStorage.getItem("sco");
+}
+    </script>
+    <div class="report">
+    <h1 class="big">Congo!!</h1>
+    <div class="report">
+    <h1>YOUR REPORT CARD</h1>
+    <br>
+    <hr>
+    <br>
+    <h2>ATTEMPTED:</h2><span id="answered"></span>
+    <h2>CORRECT:</h2><span id="correct"></span>
+    <h2>WRONG:</h2><span id="wrong"></span>
+    <br>
+    </div>
+    <hr>
+    <br>
+    <h1>TOTAL MARKS:</h1><span id="score"></span>
+    </div>
+</body>
+</html>

@@ -24,6 +24,10 @@
         {{!-- -----------------------------------------login form--------------------------------------}}
         <div class="form-inner">
           <form action="/login" class="login" method="POST">
+            <select name="role" id="">
+              <option value="user" selected>User</option>
+              <option value="admin" >Admin</option>
+            </select>
             <div class="field">
               <input type="text" placeholder="Email Address" required name="lemail">
             </div>
@@ -40,6 +44,10 @@
 
         {{!-- -----------------------------------------Register form--------------------------------------}}
           <form action="/register" class="signup" method="POST">
+            <select name="role" id="">
+              <option value="user" selected>User</option>
+              <option value="admin" >Admin</option>
+            </select>
             <div class="field">
               <input type="text" placeholder="Nick Name" required name="rnickname">
             </div>

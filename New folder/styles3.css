@@ -1,0 +1,23 @@
+.big
+{
+    font-size: 100px;
+   color: #f53163;
+   font-family: 'Raleway', sans-serif;
+font-family: 'Rubik Bubbles', cursive;
+}
+h1,h2{
+   color: #f53163;
+   font-family: 'Sono', sans-serif;
+
+}
+.report{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    width:auto;
+    height: auto;
+    text-align: center;
+}
+body{
+    background-color: #fef2f2;
+}

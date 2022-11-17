@@ -1,17 +1,28 @@
 const mongoose=require("mongoose");
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
+const validator=require("validator");
 
 const userSchema=new mongoose.Schema({
     nickname:{
         type:String,
         required:true,
+        validate(value) {
+            if (validator.isEmpty(value)) {
+              throw new Error("Nickname is Required");
+            }
+          },
     },
     email:{
         type:String,
         required:true,
         unique:true,
-        trim:true
+        trim:true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+              throw new Error("Email Invalid");
+            }
+          },
     },
     password:{
         type:String,
@@ -21,12 +32,10 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    role:{
-        type:[{
-            type:String,
-            enum:["user","admin"]
-        }],
-        default:["user"]
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
     },
     tokens:[{
         token:{

@@ -1,0 +1,60 @@
+body{
+    background-color:#F6F6C9;
+
+}
+#firstpage
+{
+color: #153462;
+font-family: 'Raleway', sans-serif; 
+font-size: 200px;
+padding-top: 0;
+margin-top: 20px;
+display:inline-block;
+margin-right: 0px;
+}
+body{
+    height: 100vh;
+    padding: 0px;
+}
+.fcontainer
+{
+    display:flex;
+    height: 100%;
+}
+.fitem
+{
+    width: 20%;
+align-self: center;
+justify-self: center;
+align-items: center;
+font-family: 'Raleway', sans-serif;
+font-family: 'Rubik Bubbles', cursive;
+}
+.btn
+{
+        background-color: #4FA095;
+        color: white;
+        border: none;
+        padding: 5px;
+        font-size: 31px;
+        height: 223px;
+        width: 537px;
+        box-shadow: 0 2px 4px darkslategray;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-radius: 70%;
+        margin-top: 15%;
+        margin-right: 148px;
+
+}
+#noline
+{
+text-decoration: none;
+color: white;
+}
+a:visited{
+    color: white;
+}
+.btn:active{
+        box-shadow: 2px 2px 5px #4FA095;
+}

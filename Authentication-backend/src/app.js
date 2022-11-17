@@ -11,6 +11,7 @@ require("./db/connection");
 const Register=require("./models/register");
 const auth=require("./middleware/auth");
 const transpoter=require("./middleware/email");
+const { resolve } = require('path');
 
 const static_path=path.join(__dirname,"../public");
 const views_path=path.join(__dirname,"../views");
@@ -42,6 +43,7 @@ app.get("/password/reset",(req,res)=>{
 });
 
 
+
 app.get("/password/reset/:id/:token",(req,res)=>{
   data={
     fetch_id:req.params.id,
@@ -54,6 +56,14 @@ app.get("/update",auth,(req,res)=>{
     res.render("update");
 })
 
+app.get("/delete/user",auth,(req,res)=>{
+    res.render("deleteuser");
+});
+app.get("/makeadmin",auth,(req,res)=>{
+    res.render("change_user");
+});
+
+
 
 app.post("/register",async(req,res)=>{
     try {
@@ -65,7 +75,8 @@ app.post("/register",async(req,res)=>{
                 nickname:req.body.rnickname,
                 email:req.body.remail,
                 password:req.body.rpassword,
-                confirmpassword:req.body.rcpassword
+                confirmpassword:req.body.rcpassword,
+                role:req.body.role,
             })
             // console.log("the success part"+registerUser);
 
@@ -102,7 +113,9 @@ app.post("/login",async(req,res)=>{
     try {
         const email=req.body.lemail;
         const password=req.body.lpassword;
-        const userlogin=await Register.findOne({email:email});
+        const userrole=req.body.role;
+        const userlogin=await Register.findOne({email:email,role:userrole});
+        console.log(userlogin);
 
         const match= await bcrypt.compare(password,userlogin.password);
 
@@ -208,10 +221,49 @@ app.post("/update",auth,async(req,res)=>{
     res.render("homepage");
 });
 
+app.post("/delete/user",async(req,res)=>{
+    try {
+        const delete_email=req.body.uemail;
+        const clientData=await Register.findOneAndDelete({email:delete_email});
+        console.log(clientData);
+
+        if(!clientData){
+            return res.status(400).send();
+        }else{
+            res.send("user successfully  deleted");
+        }
+    } catch (e) {
+        res.status(500).send(e);
+        
+    }
+});
+
+app.post("/makeadmin",async(req,res)=>{
+    try {
+        const useradmin=req.body.uemail;
+        const user = await Register.findOne({ email: useradmin });
+        console.log(user);
+        const duty=user.role;
+        console.log(duty);
+        if(duty==="admin"){
+            res.status(400).json({ message : "user is already admin" });
+        }else{
+            const newadmin=await Register.findOneAndUpdate({email:useradmin},{role:"admin"});
+            res.status(200).json({ message : "Role has been successfully Changed"});
+
+        }
+        
+    } catch (e) {
+        
+        res.status(400).json({ message : "something went wrong"})
+    }
+
+});
+  
+
 
 app.listen(process.env.PORT||3000,()=>{
     console.log("connected");
 });
-
 
 

@@ -1,0 +1,169 @@
+body{
+    margin-top:0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    background-color: #97caef;
+}
+.topleft
+{
+    display: flex;
+    justify-content: flex-end;
+}
+.countdownvalues
+{
+    padding: 10px;
+}
+#minutes
+{
+    padding: 10px;
+}
+#seconds
+{
+    padding: 10px;
+}
+.btn2
+{
+    margin-left: 20px;
+    font-size: 20px;
+}
+.options
+{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.optionitem
+{
+    display:flex;
+    flex-direction: column;
+}
+.labels
+{
+    font-size: 20px;
+margin-bottom: 10px;
+}
+.fcontainer
+{
+    display:flex;
+    height:100%;
+    width: 100%;
+    justify-content: space-between;
+    margin-right: 0px;
+}
+.right
+{
+    display:flex;
+    flex-direction: column;
+    background-color:#cafafe;
+    margin-right: -7px;
+    
+}
+.righttop{
+    margin-bottom:10px;
+
+}
+.rightbottom
+{
+  margin-bottom: 10px;
+}
+.rightmid{
+margin-bottom: 10px;
+}
+.left{
+    width: 70%;
+    background-color: #97caef;
+    margin-left: 10px;
+}
+.right
+{
+    width: 30%;
+    justify-content: center;
+    text-align: center;
+    height:100vh;
+
+}
+.rightbottom{
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+    margin-bottom: 25px;
+}
+.righttop{
+    height: 30%;
+    margin-bottom: 29px;
+}
+.rightmid{
+    height:40%;
+
+}
+.questions
+{
+    border: none;
+    border-radius: 20%;
+    background-color: #55bcc9;
+    font-size: 40px;
+}
+.questions:hover{
+    background-color: #55bcc9 ;   
+}
+.navigate
+{
+    height: 120px;
+    width: 170px;
+    margin: 10px auto;
+    background-color: #fc4445; 
+    font-family: 'Sono', sans-serif;
+}
+.navigate:hover{
+    background-color: #55bcc9 ;  
+}
+.questions{
+    font-family: 'Sono', sans-serif;
+}
+.questions:hover{
+    background-color: #97caef;
+}
+.btn2
+{
+    background-color: #fc4445;
+    margin: 0px;
+    font-family: 'Sono', sans-serif;
+}
+.btn2:hover{
+    background-color: #55bcc9 ;
+}
+h1{
+    font-family: 'Dancing Script', cursive;
+}
+.questionnumber
+{
+    font-size: 80px;
+}
+h2{
+    font-family: 'Dancing Script', cursive;
+}
+.labels{
+    font-family: 'Dancing Script', cursive;
+    font-size: 70px;
+}
+.question{
+    font-size: 70px;
+}
+input[type=radio]
+{
+    border: 0px;
+    width: 20px;
+    height: 2em;
+}
+#q1
+{
+    background-color: #97caef;
+}
+.overview
+{
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+}
+a{
+    text-decoration: none;
+}
