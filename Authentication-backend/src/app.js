@@ -115,7 +115,7 @@ app.post("/login",async(req,res)=>{
         const password=req.body.lpassword;
         const userrole=req.body.role;
         const userlogin=await Register.findOne({email:email,role:userrole});
-        console.log(userlogin);
+        // console.log(userlogin);
 
         const match= await bcrypt.compare(password,userlogin.password);
 
@@ -207,7 +207,9 @@ app.post("/password/reset/:id/:token",async(req,res)=>{
 
 app.post("/displaynickname",async(req,res)=>{
     const bandaemail=req.body.uemail;
+    console.log(bandaemail);
     const displaynickmane=await Register.findOne({email:bandaemail});
+    console.log(displaynickmane);
     const username=displaynickmane.nickname;
      res.render("nickname",{
         nicknameofperson:username
@@ -259,11 +261,7 @@ app.post("/makeadmin",async(req,res)=>{
     }
 
 });
-  
-
 
 app.listen(process.env.PORT||3000,()=>{
     console.log("connected");
 });
-
-

@@ -3,43 +3,48 @@ const ejs=require("ejs");
 const bodyParser = require("body-parser");
 
 const app = express();
+app.use(express.urlencoded({extended:false})); 
+app.use(express.static("public"));
 app.set("view engine","ejs");
+
+let newAdds=["Buy Food","Cook Food","Eat Foods"];
+let workitems=[];
 
 app.get("/", function (req, res) {
   let today =new Date();
-  let currentDay = today.getDay();
-  console.log(currentDay);
-  let day=""
-  switch (currentDay) {
-    case 0:
-      day="Sunday";
-      break;
-    case 1:
-      day="Monday";
-      break;
-    case 2:
-      day="Tuesday";
-      break;
-    case 3:
-      day="Wednesday";
-      break;
-    case 4:
-      day="Thusday";
-      break;
-    case 5:
-      day="Friday";
-      break;
-    case 6:
-      day="Saturday";
-      break;
-  
-    default:
-      break;
+
+
+  let option={
+    weekday:"long",
+    day:"numeric",
+    month:"long"
   }
-  res.render("list",{kindofday:day})
+
+  let day=today.toLocaleDateString("en-US",option);
+
+  res.render("list",{listTitle:day,newlistitems:newAdds})
 });
 
+app.post("/",(req,res)=>{
+  let item=req.body.new_item;
+  if(req.body.list==="work list"){
+    workitems.push(item);
+    res.redirect("/work");
+  }else{
+    newAdds.push(item);
+    res.redirect("/");
+  }
 
-app.listen(80, function () {
+});
+
+app.get("/work",(req,res)=>{
+  res.render("list",{listTitle:"work list",newlistitems:workitems});
+});
+app.get("/about",(req,res)=>{
+  res.render("about");
+})
+
+
+app.listen(3000, function () {
   console.log("server has started on port 80");
 });
